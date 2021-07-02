@@ -21,6 +21,10 @@ public class TestLibretto {
 		libretto.add(new Voto("Chimica 1", 30, true, LocalDate.of(2021, 6, 12)));		
 	
 		System.out.println(libretto);
+		
+		Libretto libretto25 = libretto.votiUguali(25);
+		System.out.println(libretto25);
+		
 	}
 
 
