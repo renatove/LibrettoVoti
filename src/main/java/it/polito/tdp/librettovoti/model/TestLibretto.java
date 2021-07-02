@@ -25,6 +25,14 @@ public class TestLibretto {
 		Libretto libretto25 = libretto.votiUguali(25);
 		System.out.println(libretto25);
 		
+		if (libretto.ricercaCorso("Chimica 1") == null) {
+			System.out.println("Corso non trovato\n");
+		} else {
+			System.out.println(libretto.ricercaCorso("Chimica 1"));
+		}
+		
+		
+		
 	}
 
 
