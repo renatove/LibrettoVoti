@@ -68,7 +68,12 @@ public class Voto {
 
 	@Override
 	public String toString() {
-		return "Esame " + nomeCorso + " con voto " + voto  + " superato in data " + data + "\n";
+		if(this.conLode == false) {
+			return "Esame " + nomeCorso + " con voto " + voto  + " superato in data " + data + "\n";
+		} else {
+			return "Esame " + nomeCorso + " con voto " + voto  + " con lode superato in data " + data + "\n";
+		}
+		
 	}
 
 	
