@@ -7,11 +7,13 @@ package it.polito.tdp.librettovoti;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
+import java.util.zip.DataFormatException;
 
 import it.polito.tdp.librettovoti.model.Libretto;
 import it.polito.tdp.librettovoti.model.Voto;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -39,8 +41,8 @@ public class FXMLController {
     @FXML // fx:id="txtVoto"
     private TextField txtVoto; // Value injected by FXMLLoader
 
-    @FXML // fx:id="txtData"
-    private TextField txtData; // Value injected by FXMLLoader
+    @FXML // fx:id="dpEsame"
+    private DatePicker dpEsame; // Value injected by FXMLLoader
 
     @FXML // fx:id="rLode"
     private RadioButton rLode; // Value injected by FXMLLoader
@@ -52,9 +54,26 @@ public class FXMLController {
     void btnInserisci(ActionEvent event) {
     	// leggi e controlla l'informazione
     	String nomeEsame = txtEsame.getText();
-    	int votoInt = Integer.parseInt(txtVoto.getText());
-    	LocalDate data = LocalDate.parse(txtData.getText());
+    	if (nomeEsame.length()==0) {
+    		txtResult.setText("ERRORE: Nome esame non valido!\n");
+    		return;
+    	}
+    	int votoInt = 0;
+    	try {
+    		votoInt = Integer.parseInt(txtVoto.getText());
+    	} catch (NumberFormatException e) {
+    		txtResult.setText("ERRORE: Voto non valido!\n");
+    	}
+    	
+    	if (votoInt<18 || votoInt > 30) {
+    		txtResult.setText("ERRORE: Voto fuori dell'intervallo 18-30!\n");
+    	}
     	boolean conLode = rLode.isSelected();
+    	
+    	LocalDate data = dpEsame.getValue();
+    	if(data == null) {
+    		txtResult.setText("ERRORE: la data è obbligatoria!\n");
+    	}
     	
     	// esegui l'operazione (inserisci)
     	Voto voto = new Voto(nomeEsame,votoInt,conLode,data);
@@ -62,6 +81,9 @@ public class FXMLController {
     	
     	// aggiorna i risultati (notifica)
     	txtResult.setText(model.toString());
+    	txtEsame.clear();
+    	txtVoto.clear();
+    	rLode.setSelected(false);
     	
     }
 
@@ -69,7 +91,7 @@ public class FXMLController {
     void initialize() {
         assert txtEsame != null : "fx:id=\"txtEsame\" was not injected: check your FXML file 'Scene.fxml'.";
         assert txtVoto != null : "fx:id=\"txtVoto\" was not injected: check your FXML file 'Scene.fxml'.";
-        assert txtData != null : "fx:id=\"txtData\" was not injected: check your FXML file 'Scene.fxml'.";
+        assert dpEsame != null : "fx:id=\"dpEsame\" was not injected: check your FXML file 'Scene.fxml'.";
         assert rLode != null : "fx:id=\"rLode\" was not injected: check your FXML file 'Scene.fxml'.";
         assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Scene.fxml'.";
 
