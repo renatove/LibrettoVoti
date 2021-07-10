@@ -5,7 +5,11 @@
 package it.polito.tdp.corsi;
 
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+
+import it.polito.tdp.corsi.model.Corso;
 import it.polito.tdp.corsi.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -47,11 +51,72 @@ public class FXMLController {
     @FXML
     void corsiPerPeriodo(ActionEvent event) {
     	
+    	txtRisultato.clear();
+    	
+    	if(txtPeriodo.getText() == null) {
+    		txtRisultato.setText("devi inserire un numero 1 o 2 per il periodo");
+    		return;
+    	}
+    	
+    	String periodo = txtPeriodo.getText();
+    	Integer pd;
+    
+    	
+    	try {
+    		pd = Integer.parseInt(periodo);
+    		
+    	} catch (NumberFormatException e){
+    		txtRisultato.setText("devi inserire un numero 1 o 2 per il periodo");
+    		return;
+    		
+    	}
+    	
+    	if(pd < 1 || pd > 2) {
+    		txtRisultato.setText("devi inserire un numero 1 o 2 per il periodo");
+    		return;
+    	}
+    	
+    	List<Corso> corsi = model.getCorsiPerPeriodo(pd);
+    	for (Corso corso: corsi ) {
+    		txtRisultato.appendText(corso.getNome() + "\n");
+    	}
+    	
     }
 
     @FXML
     void numeroStudenti(ActionEvent event) {
+    	txtRisultato.clear();
     	
+    	if(txtPeriodo.getText() == null) {
+    		txtRisultato.setText("devi inserire un numero 1 o 2 per il periodo");
+    		return;
+    	}
+    	
+    	String periodo = txtPeriodo.getText();
+    	Integer pd;
+    
+    	
+    	try {
+    		pd = Integer.parseInt(periodo);
+    		
+    	} catch (NumberFormatException e){
+    		txtRisultato.setText("devi inserire un numero 1 o 2 per il periodo");
+    		return;
+    		
+    	}
+    	
+    	if(pd < 1 || pd > 2) {
+    		txtRisultato.setText("devi inserire un numero 1 o 2 per il periodo");
+    		return;
+    	}
+    	
+    	Map<Corso, Integer> corsoIscrizioni = model.getIscrittiPerPeriodo(pd);
+    	for(Corso c: corsoIscrizioni.keySet()) {
+    		txtRisultato.appendText(c.toString());
+    		Integer n = corsoIscrizioni.get(c);
+    		txtRisultato.appendText("\t"+n+"\n");
+    	}
+
     }
 
     @FXML
